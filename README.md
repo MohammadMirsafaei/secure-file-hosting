@@ -8,7 +8,7 @@ this is a secure file hosting based on MAC(BLP, Biba) written in PHP.
 $ composer install
 ```
 
-## How to rnu test
+## How to run test
 
 ```
 $ php ./test/{module}/{test}.php
