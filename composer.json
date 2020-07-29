@@ -18,7 +18,8 @@
             "Auth\\": "src/auth",
             "ACS\\": "src/acs",
             "FS\\": "src/fs",
-            "Logger\\": "src/logger"
+            "Logger\\": "src/logger",
+            "App\\": "src/app"
         }
     }
 }
