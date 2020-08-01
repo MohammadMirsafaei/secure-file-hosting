@@ -12,7 +12,9 @@
             "name": "Reihane Halvaei"
         }
     ],
-    "require": {},
+    "require": {
+        "eftec/bladeone": "^3.46"
+    },
     "autoload": {
         "psr-4": {
             "Auth\\": "src/auth",
