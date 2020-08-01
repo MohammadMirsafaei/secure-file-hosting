@@ -21,10 +21,10 @@ class Router
      * 
      * @param string $pattern Pattern of url
      * @param string $method Method of url
-     * @param Closure $callback Callback function for handling request
+     * @param callable $callback Callback function for handling request
      * @throws \InvalidArgumentException 
      */
-    public function addRoute(string $pattern, string $method, Closure $callback)
+    public function addRoute(string $pattern, string $method, callable $callback)
     {
         array_push($this->routes, new Route($pattern, $method, $callback));
     }
@@ -32,13 +32,26 @@ class Router
     public function handle()
     {
         $pattern = $_SERVER['REQUEST_URI'];
-        $route = array_map(function(\App\Route $i) use($pattern) {
-            if($i->pattern == $pattern) { return $i; };
-        }, $this->routes);
+        $route = array_filter(
+            $this->routes,
+            function(\App\Route $i) use($pattern) {
+                return $i->pattern == $pattern;
+            }
+        )[0];
+
+        
+        
+        
         
         if($route == null) {
             throw new RouteNotFoundException;
         }
+        
+        if($route->method != $_SERVER['REQUEST_METHOD']) {
+            throw new BadMethodException;
+        }
+
+        $route->callback->__invoke();
         
 
 

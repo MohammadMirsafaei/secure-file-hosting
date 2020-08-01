@@ -10,7 +10,7 @@ class Route
     public $method;
     public $callback;
 
-    public function __construct(string $pattern, string $method, Closure $callback)
+    public function __construct(string $pattern, string $method, callable $callback)
     {
         if($pattern == '')
             throw new \InvalidArgumentException('Pattern should be a non empty string');
@@ -22,6 +22,6 @@ class Route
 
         $this->pattern = $pattern;
         $this->method = $method;
-        // $this->$callback = $callback;
+        $this->callback = $callback;
     }
 }
