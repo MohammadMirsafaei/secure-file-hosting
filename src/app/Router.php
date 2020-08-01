@@ -39,7 +39,7 @@ class Router
             function(\App\Route $i) use($pattern) {
                 return $i->pattern == $pattern;
             }
-        )[0];
+        );
 
         
         
@@ -49,7 +49,15 @@ class Router
             throw new RouteNotFoundException;
         }
         
-        if($route->method != $_SERVER['REQUEST_METHOD']) {
+        $route = array_values(array_filter(
+            $route,
+            function(\App\Route $i) {
+                return $i->method == $_SERVER['REQUEST_METHOD'];
+            }
+        ))[0];
+            
+
+        if($route == null) {
             throw new BadMethodException;
         }
 

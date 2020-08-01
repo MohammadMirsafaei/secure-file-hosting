@@ -14,8 +14,7 @@ $static = '/assets';
 
 
 
-$app->handle('/login', 'GET', function(Request $request) use($blade,$static) {
-    
+$app->handle('/login', 'GET', function(Request $request) use($blade,$static) { 
     echo $blade->run('login',['static'=>$static,'name'=>$request->a]);
 });
 $app->handle('/login', 'POST', function() use($blade,$static) {
