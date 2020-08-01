@@ -4,8 +4,10 @@ namespace App;
 
 
 use App\Route;
+use App\Request;
 use App\RouteNotFoundException;
 use Closure;
+
 
 class Router
 {
@@ -31,7 +33,7 @@ class Router
 
     public function handle()
     {
-        $pattern = $_SERVER['REQUEST_URI'];
+        $pattern = strtok($_SERVER["REQUEST_URI"], '?');
         $route = array_filter(
             $this->routes,
             function(\App\Route $i) use($pattern) {
@@ -51,7 +53,7 @@ class Router
             throw new BadMethodException;
         }
 
-        $route->callback->__invoke();
+        $route->callback->__invoke(new Request($route->method));
         
 
 

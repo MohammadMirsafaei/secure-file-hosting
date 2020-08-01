@@ -3,6 +3,7 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 use App\App;
+use App\Request;
 use App\BadMethodException;
 use App\RouteNotFoundException;
 use eftec\bladeone\BladeOne;
@@ -13,11 +14,12 @@ $static = '/assets';
 
 
 
-$app->handle('/login', 'GET', function() use($blade,$static) {
-    echo $blade->run('login',['static'=>$static]);
+$app->handle('/login', 'GET', function(Request $request) use($blade,$static) {
+    
+    echo $blade->run('login',['static'=>$static,'name'=>$request->a]);
 });
 $app->handle('/login', 'POST', function() use($blade,$static) {
-    
+    echo 'as';
 });
 
 
