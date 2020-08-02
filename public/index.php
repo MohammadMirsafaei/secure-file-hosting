@@ -19,7 +19,7 @@ $app->handle('/login', 'GET', function() use($blade,$static) {
     echo $blade->run('login',['static'=>$static]);
 });
 $app->handle('/login', 'POST', function(Request $request) use($blade,$static) {
-    Database::insert("insert into Users(username,password) values (:username, :password)",
+    Database::command("insert into Users(username,password) values (:username, :password)",
                     [
                         'username' => 'qwe',
                         'password' => '123'
