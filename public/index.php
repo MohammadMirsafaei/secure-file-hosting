@@ -32,6 +32,12 @@ $app->handle('/login', 'POST', function(Request $request) use($blade,$static) {
     }
 });
 
+$app->handle('/logout', 'GET', function(Request $request) {    
+    Auth::revoke();
+    redirect('/login');
+});
+
+
 
 
 
