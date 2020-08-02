@@ -41,13 +41,11 @@ class Database {
         return $result;
     }
 
-    public function insert(string $query,string $types,...$el): bool
+    public static function insert(string $query,array $values)
     {
         self::connect();
         $stmt = self::$connection->prepare($query);
-        $stmt->bind_param("");
-        $stmt->execute();
-        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $stmt->execute($values);
         self::close();
         return true;
     }
