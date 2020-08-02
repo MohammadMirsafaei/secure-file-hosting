@@ -14,7 +14,7 @@ class User {
     
     public static function has(string $username, string $pass): bool
     {
-        $user = Database::select("select * from Users where username='{$username}'");
+        $user = Database::select("select * from Users where username='{$username}'")[0];
         if($user == null) {
             return false;
         }
@@ -31,12 +31,32 @@ class User {
         return true;
     }
 
-    public function create(string $username, string $password): bool
+    public static function create(string $username, string $password): bool
     {
         if(self::hasUsername($username)) {
             return false;
         }
-        
-        
+        Database::command("insert into Users(username,password) values (:username, :password)",
+                            [
+                                'username' => $username,
+                                'password' => Hash::make($password)
+                            ]);
+        return true;
+    }
+
+    public static function getID(string $username): int
+    {
+        $user = Database::select("select * from Users where username='{$username}'")[0];
+        return $user['id'];
+    }
+
+    public static function getUserById(int $id)
+    {
+        $user = Database::select("select * from Users where id={$id}")[0];
+        $ret = new User();
+        $ret->username = $user['username'];
+        $ret->password = $user['password'];
+        $ret->id = $user['id'];
+        return $ret;
     }
 }

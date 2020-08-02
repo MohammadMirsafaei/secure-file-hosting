@@ -1,13 +1,15 @@
 <?php
-
+session_start();
 require_once __DIR__.'/../vendor/autoload.php';
 
 use App\App;
 use App\Request;
 use App\BadMethodException;
 use App\RouteNotFoundException;
+use Auth\Auth;
 use eftec\bladeone\BladeOne;
 use Database\Database;
+use Models\User;
 
 $app = App::init();
 $blade = new BladeOne(__DIR__.'/views',__DIR__.'/../cache',BladeOne::MODE_DEBUG);
@@ -16,15 +18,18 @@ $static = '/assets';
 
 
 $app->handle('/login', 'GET', function() use($blade,$static) { 
+    if(Auth::getAuthUser() != null) {
+        redirect('/');
+    }
     echo $blade->run('login',['static'=>$static]);
 });
 $app->handle('/login', 'POST', function(Request $request) use($blade,$static) {
-    Database::command("insert into Users(username,password) values (:username, :password)",
-                    [
-                        'username' => 'qwe',
-                        'password' => '123'
-                    ]);
-    var_dump(Database::select("select * from Users"));
+    $username = $request->username;
+    $password = $request->password;
+    if(Auth::authenticate($username,$password))
+    {
+        redirect('/');
+    }
 });
 
 
@@ -44,3 +49,8 @@ try {
 }
 
 
+
+function redirect(string $path)
+{
+    header("Location:".$path);
+}
