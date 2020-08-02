@@ -21,7 +21,9 @@
             "ACS\\": "src/acs",
             "FS\\": "src/fs",
             "Logger\\": "src/logger",
-            "App\\": "src/app"
+            "App\\": "src/app",
+            "Database\\": "src/database",
+            "Models\\": "src/models"
         }
     }
 }

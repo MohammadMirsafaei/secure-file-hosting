@@ -2,9 +2,18 @@
 
 namespace Auth;
 
+use Models\User;
+/**
+ * @property \Models\User $user
+ */
 class Auth {
-    public function test()
+    public static $user;
+
+    public static function authenticate(string $username, string $password): bool
     {
-        echo "yes"; 
+        if(User::has($username,$password)) {
+            return true;
+        }
+        return false;
     }
 }

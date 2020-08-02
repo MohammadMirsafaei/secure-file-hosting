@@ -7,6 +7,7 @@ use App\Request;
 use App\BadMethodException;
 use App\RouteNotFoundException;
 use eftec\bladeone\BladeOne;
+use Database\Database;
 
 $app = App::init();
 $blade = new BladeOne(__DIR__.'/views',__DIR__.'/../cache',BladeOne::MODE_DEBUG);
@@ -14,11 +15,11 @@ $static = '/assets';
 
 
 
-$app->handle('/login', 'GET', function(Request $request) use($blade,$static) { 
-    echo $blade->run('login',['static'=>$static,'name'=>$request->a]);
+$app->handle('/login', 'GET', function() use($blade,$static) { 
+    echo $blade->run('login',['static'=>$static]);
 });
-$app->handle('/login', 'POST', function() use($blade,$static) {
-    echo 'as';
+$app->handle('/login', 'POST', function(Request $request) use($blade,$static) {
+    
 });
 
 
