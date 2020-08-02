@@ -41,7 +41,7 @@ class Database {
         return $result;
     }
 
-    public static function insert(string $query,array $values)
+    public static function command(string $query,array $values)
     {
         self::connect();
         $stmt = self::$connection->prepare($query);
