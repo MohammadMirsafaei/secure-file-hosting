@@ -10,6 +10,8 @@ class User {
     public $username;
     private $password;
     public $lastFailAttempt;
+    public $integLevel;
+    public $confLevel;
 
     
     public static function has(string $username, string $pass): bool
