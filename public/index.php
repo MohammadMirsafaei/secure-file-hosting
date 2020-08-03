@@ -17,6 +17,24 @@ $static = '/assets';
 
 
 
+
+$app->handle('/', 'GET', function() use($blade,$static) { 
+    $user = Auth::getAuthUser();
+    if($user == null) {
+        redirect('/login');
+	}
+    $files = [];
+    echo $blade->run('list',['static'=>$static , 'user'=>$user, 'files'=>$files]);
+});
+
+$app->handle('/add_file', 'GET', function() use($blade,$static) { 
+    $user = Auth::getAuthUser();
+    if($user == null) {
+        redirect('/login');
+	}
+    echo $blade->run('add_file',['static'=>$static , 'user'=>$user]);
+});
+
 $app->handle('/login', 'GET', function() use($blade,$static) { 
     if(Auth::getAuthUser() != null) {
         redirect('/');
@@ -32,10 +50,6 @@ $app->handle('/login', 'POST', function(Request $request) use($blade,$static) {
     }
 });
 
-$app->handle('/logout', 'GET', function(Request $request) {    
-    Auth::revoke();
-    redirect('/login');
-});
 
 
 
