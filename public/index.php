@@ -17,6 +17,8 @@ $blade = new BladeOne(__DIR__.'/views',__DIR__.'/../cache',BladeOne::MODE_DEBUG)
 $static = '/assets';
 
 
+
+
 //Done
 $app->handle('/', 'GET', function() use($blade,$static) { 
     $user = Auth::getAuthUser();
@@ -38,13 +40,68 @@ $app->handle('/add_user', 'GET', function() use($blade,$static) {
     echo $blade->run('add_user',['static'=>$static , 'user'=>$user]);
 });
 $app->handle('/add_user', 'POST', function(Request $request) use($blade,$static) {
+    $user = Auth::getAuthUser();
+    if($user == null) {
+        redirect('/login');
+	}
     $username = $request->username;
     $password = $request->password;
-    if(User::create($username,$password))
+    $password_confirm = $request->password_confirm;
+    if($password_confirm == $password && User::create($username,$password))
     {
         redirect('/');
     }
+    else
+	redirect('/add_user');
+	
 });
+
+
+//-check integlevel &...
+$app->handle('/read_file', 'GET', function(Request $request) use($blade,$static) { 
+
+    $user = Auth::getAuthUser();
+    if($user == null) {
+        redirect('/login');
+	}
+    $file_id = $request->id;
+    $file = File::getFileById($file_id);
+    
+    echo $blade->run('read_file',['static'=>$static , 'user'=>$user , 'file'=>$file]);
+});
+
+
+
+
+
+
+//-check integlevel &...
+$app->handle('/edit_file', 'GET', function(Request $request) use($blade,$static) { 
+
+    $user = Auth::getAuthUser();
+    if($user == null) {
+        redirect('/login');
+	}
+    $file_id = $request->id;
+    $file = File::getFileById($file_id);
+    
+    echo $blade->run('edit_file',['static'=>$static , 'user'=>$user , 'file'=>$file]);
+});
+$app->handle('/edit_file', 'POST', function(Request $request) use($blade,$static) {
+    $user = Auth::getAuthUser();
+    if($user == null) {
+        redirect('/login');
+	}
+    $file_id = $request->file_id;
+    $content = $request->content;
+
+    if(File::update($file_id,$content))
+    {
+
+        redirect('/');
+    }
+});
+
 
 
 //----------------------
@@ -56,7 +113,7 @@ $app->handle('/change_password', 'GET', function() use($blade,$static) {
     echo $blade->run('change_password',['static'=>$static , 'user'=>$user]);
 });
 $app->handle('/change_password', 'POST', function(Request $request) use($blade,$static) {
-    $username = $request->username;
+
     $password = $request->password;
     if(User::create($username,$password))
     {
@@ -75,7 +132,10 @@ $app->handle('/add_file', 'GET', function() use($blade,$static) {
     echo $blade->run('add_file',['static'=>$static , 'user'=>$user]);
 });
 $app->handle('/add_file', 'POST', function(Request $request) use($blade,$static) {
-
+    $user = Auth::getAuthUser();
+    if($user == null) {
+        redirect('/login');
+	}
     $name = $request->name;
     $content = $request->content;
     $confLevel = $request->confidentialitylevel;
@@ -110,7 +170,6 @@ $app->handle('/logout', 'GET', function(Request $request) {
     Auth::revoke();
     redirect('/login');
 });
-
 
 
 

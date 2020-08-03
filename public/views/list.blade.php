@@ -10,7 +10,7 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="./list.html"><i class="fa fa-folder"></i>مدیریت فایل ها</a> <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button"><span class="navbar-toggler-icon"></span></button>
+    <a class="navbar-brand" href="./"><i class="fa fa-folder"></i>مدیریت فایل ها</a> <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
@@ -52,13 +52,13 @@
 		foreach ($files as $file) {
 	?>
         <tr>
-          <td><i class="'fa fa-file-word-o'"></i> <a dir="ltr" href="<?php echo "./read_file/".$file->id ?>" class="text-dark">{{ $file->name }}</a></td>
+          <td><i class="'fa fa-file-word-o'"></i> <a dir="ltr" href="<?php echo "./read_file?id=".$file->id ?>" class="text-dark">{{ $file->name }}</a></td>
            <td dir="ltr">{{ $file->confLevel }}</td>
 	   <td dir="ltr">{{ $file->integLevel }}</td>
           <td>
             
-            <a href="<?php echo "./delete_file/".$file->id ?>" class="text-dark"><i class="fa fa-trash"></i></a>
-            <a href="<?php echo "./edit_file/".$file->id ?>" class="text-dark"> <i class="fa fa-edit"></i></a>
+            <a href="<?php echo "./delete_file?id=".$file->id ?>" class="text-dark"><i class="fa fa-trash"></i></a>
+            <a href="<?php echo "./edit_file?id=".$file->id ?>" class="text-dark"> <i class="fa fa-edit"></i></a>
             
           </td>
         </tr>

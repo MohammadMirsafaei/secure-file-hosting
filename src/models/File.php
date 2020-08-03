@@ -49,6 +49,20 @@ class File {
         }
         return $retFiles;
     }
+  
+    public static function getFileById(int $id)
+    {
+        $value = Database::select("select * from Files where id={$id}")[0];
+        $file = new File();
+        $file->content = $value['content'];
+            $file->name = $value['name'];
+            $file->id = $value['id'];
+            $file->integLevel = $value['integlevel'];
+            $file->confLevel = $value['conflevel'];
+            $file->username = $value['username'];
+	$ret = $file;
+        return $ret;
+    }
 
     
 }
