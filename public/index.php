@@ -159,7 +159,7 @@ $app->handle('/delete_file', 'GET', function(Request $request) use($blade,$stati
     $file_id = $request->id;
     $file = File::getFileById($file_id);
     
-    if($file->deleteFile($file_id))
+    if($file->delete($file_id))
     {
         redirect('/');
     }
