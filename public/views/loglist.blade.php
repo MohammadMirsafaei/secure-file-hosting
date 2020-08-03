@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-  <title>فایل جدید </title>
+  <title>لیست فایل‌ها</title>
   <link href="{{$static}}/css/bootstrap.min.css" rel="stylesheet">
   <link href="{{$static}}/css/vazir-font.css" rel="stylesheet">
   <link href="{{$static}}/css/font-awesome.css" rel="stylesheet">
@@ -34,41 +33,35 @@
     </div>
   </nav>
   <main class="container" style="margin-top: 100px">
-    <h1 class="font-weight-bold"><i class="fa fa-plus"></i> فایل جدید برای<span dir="ltr">فلان یوزر</span></h1>
-    <form method="post">
-      <div class="form-group">
-        <label for="name">نام فایل</label>
-        <input type="text" dir="ltr" class="form-control" name="name" id="name" placeholder="نام فایل" required autofocus>
-      </div>
-	  <div class="form-row">
-		  <div class="form-group col-md-6">
-			<label for="confidentiality-lbl">سطح محرمانگی</label>
-			<select class="form-control" name="confidentialitylevel" id="confidentiality-lbl">
-			  <option>TopSecret</option>
-			  <option>Secret</option>
-			  <option>Confidential</option>
-			  <option>UnClassified</option>
-			</select>
-		  </div>
-		  <div class="form-group col-md-6">
-			<label for="integrity-lbl">سطح صحت</label>
-			<select class="form-control" name="integritylevel" id="integrity-lbl">
-			  <option>VeryTrusted</option>
-			  <option>Trusted</option>
-			  <option>SlightlyTrusted</option>
-			  <option>Untrusted</option>
-			</select>
-		  </div>
-		</div>
-      <div class="form-group">
-          <label for="content">محتوا</label>
-        <textarea dir="ltr" class="form-control" name="content" id="content" rows="10">محتوا</textarea>
-      </div>
+    <h1 class="font-weight-bold">لیست لاگ ها</h1>
+    
+    
+    <table class="table mt-5 mb-5">
+      <thead>
+        <tr>
+          <th scope="col">شناسه رویداد</th>
+          <th scope="col">رویداد</th>
+          <th scope="col">تاریخ</th>
+
 	  
-      <input type="submit" class="btn btn-dark" value="افزودن">
-    </form>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+		foreach ($logs as $log) {
+	?>
+        <tr>
+	  <td dir="ltr">{{ $log->content }}</td>
+          <td dir="ltr">{{ $log->id }}</td>       
+          <td dir="ltr">{{ $log->datetime }}</td>          
+        </tr>
+        <?php
+		}
+	?>
+      </tbody>
+    </table>
   </main>
-  <script src="{{$static}}/assets/js/jquery-3.5.1.slim.min.js"></script>
-  <script src="{{$static}}/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="{{$static}}/js/jquery-3.5.1.slim.min.js"></script>
+  <script src="{{$static}}/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

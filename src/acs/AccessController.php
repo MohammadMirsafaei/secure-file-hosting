@@ -65,12 +65,14 @@ class AccessController
 
           return true;
     }
+    
     else{ //log
       //$time = date("Y-m-d H:i:s", time()) ; 
-    $temp_log= "User "+Auth::getAuthUser()->username +" <"+Auth::getAuthUser()->integLevel +","+Auth::getAuthUser()->confLevel+
-                    "> "+ "tried to " + "read "+ $file_id->name +
-                    " <"+$file_intg_level+","+$file_conf_level+"> "+"\taccess denied";
-    Logger::log($temp_log);
+    $temp_log= "User ".Auth::getAuthUser()->username ." <".Auth::getAuthUser()->integLevel .",".Auth::getAuthUser()->confLevel.
+                    "> ". "tried to " . "read ". $file_id->name .
+                    " <".$file_intg_level.",".$file_conf_level+"> "."\taccess denied";
+    \Logger\Logger::log($temp_log);
+
     return false;
     }
     
@@ -89,10 +91,10 @@ class AccessController
     }
     else{
        //$time = date("Y-m-d H:i:s", time()) ; 
-    $temp_log= "User "+Auth::getAuthUser()->username +" <"+Auth::getAuthUser()->integLevel +","+Auth::getAuthUser()->confLevel+
-    "> "+ "tried to " + "write on "+ $file_id->name +
-    " <"+$file_intg_level+","+$file_conf_level+"> "+"\taccess denied";
-    Logger::log($temp_log);
+    $temp_log= "User ".Auth::getAuthUser()->username ." <".Auth::getAuthUser()->integLevel .",".Auth::getAuthUser()->confLevel.
+    "> ". "tried to " . "write on ". $file_id->name .
+    " <".$file_intg_level.",".$file_conf_level."> "."\taccess denied";
+    \Logger\Logger::log($temp_log);
     return false;
 
     }

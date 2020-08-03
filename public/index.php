@@ -12,6 +12,7 @@ use Database\Database;
 use Models\User;
 use Models\File;
 use FS\Filesystem;
+use Logger\Logger;
 
 $app = App::init();
 $blade = new BladeOne(__DIR__.'/views',__DIR__.'/../cache',BladeOne::MODE_DEBUG);
@@ -69,7 +70,8 @@ $app->handle('/read_file', 'GET', function(Request $request) use($blade,$static)
 	}
     $file_id = $request->id;
     $file = File::getFileById($file_id);
-    if(FS\Filesystem::download($file))
+    
+    if(Filesystem::download($file))
     {
         echo $blade->run('read_file',['static'=>$static , 'user'=>$user , 'file'=>$file]);
     }
@@ -187,6 +189,9 @@ $app->handle('/login', 'POST', function(Request $request) use($blade,$static) {
     $password = $request->password;
     if(Auth::authenticate($username,$password))
     {
+        $user = User::getUserByUsername($username);
+        $user->lastFailCount = 0;
+        $user->update();
         redirect('/');
     } else {
         if(User::hasUsername($username)) {
@@ -205,6 +210,14 @@ $app->handle('/logout', 'GET', function(Request $request) {
     redirect('/login');
 });
 
+$app->handle('/logs', 'GET', function(Request $request) use($blade,$static) {    
+    if(Auth::getAuthUser() == null) {
+        redirect('/login');
+    }
+    $logs = Logger::all();
+    echo $blade->run('loglist',['static'=>$static , 'user'=>Auth::getAuthUser(), 'logs' => $logs]);
+
+});
 
 
 

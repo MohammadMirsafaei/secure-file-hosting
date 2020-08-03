@@ -10,8 +10,12 @@ class Filesystem {
 
     public static function download(\Models\File $file): bool
     {
+        
         if(AccessController::checkDownload($file))
+        {
             return true;
+
+        }
         else {
             Logger::log("user ".Auth::getAuthUser()->username." tired to download file but stoped by ACS");
             return false;
@@ -20,9 +24,17 @@ class Filesystem {
 
     public static function upload(\Models\File $file, \Models\User $user)
     {
-        // TODO : connect acs
-        Logger::log("user {$user->username} tired to upload file but stoped by ACS");
-        File::create($file->name,$file->content,$file->confLevel,$file->integLevel,$user->username);
+        if(AccessController::checkUpload($file))
+        {
+            return true;
+
+        }
+        else {
+            Logger::log("user ".Auth::getAuthUser()->username." tired to upload file but stoped by ACS");
+            return false;
+        }
+        
+        //File::create($file->name,$file->content,$file->confLevel,$file->integLevel,$user->username);
     }
 
     public static function update(\Models\File $file, \Models\User $user, string $content)
