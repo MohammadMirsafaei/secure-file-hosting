@@ -9,6 +9,7 @@ class File {
     public $content;
     public $confLevel;
     public $integLevel;
+    public $username;
 
 
     public static function create(string $name, string $content, string $confLevel, string $integLevel, string $user): bool
@@ -30,6 +31,23 @@ class File {
             'content' => $content,
             'id' => $this->id
         ]);
+    }
+
+    public static function all(): array
+    {
+        $files = Database::select("select * from Files");
+        $retFiles = [];
+        foreach ($files as $key => $value) {
+            $file = new File();
+            $file->content = $value['content'];
+            $file->name = $value['name'];
+            $file->id = $value['id'];
+            $file->integLevel = $value['integlevel'];
+            $file->confLevel = $value['conflevel'];
+            $file->username = $value['username'];
+            array_push($retFiles,$file);
+        }
+        return $retFiles;
     }
 
     

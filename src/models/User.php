@@ -33,15 +33,17 @@ class User {
         return true;
     }
 
-    public static function create(string $username, string $password): bool
+    public static function create(string $username, string $password, string $integLevel, string $confLevel): bool
     {
         if(self::hasUsername($username)) {
             return false;
         }
-        Database::command("insert into Users(username,password) values (:username, :password)",
+        Database::command("insert into Users(username,password,integlevel,conflevel) values (:username, :password, :integLevel, :confLevel)",
                             [
                                 'username' => $username,
-                                'password' => Hash::make($password)
+                                'password' => Hash::make($password),
+                                'integLevel' => $integLevel,
+                                'confLevel' => $confLevel
                             ]);
         return true;
     }
@@ -58,6 +60,8 @@ class User {
         $ret = new User();
         $ret->username = $user['username'];
         $ret->password = $user['password'];
+        $ret->integLevel = $user['integlevel'];
+        $ret->confLevel = $user['conflevel'];
         $ret->id = $user['id'];
         return $ret;
     }

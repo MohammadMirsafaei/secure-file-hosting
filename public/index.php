@@ -76,6 +76,9 @@ $app->handle('/logout', 'GET', function(Request $request) {
 });
 
 
+$app->handle('/reg', 'GET', function(Request $request) {    
+    User::create('reza','123');
+});
 
 
 
