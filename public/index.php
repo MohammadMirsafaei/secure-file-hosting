@@ -17,7 +17,6 @@ $static = '/assets';
 
 
 
-
 $app->handle('/', 'GET', function() use($blade,$static) { 
     $user = Auth::getAuthUser();
     if($user == null) {
@@ -27,6 +26,24 @@ $app->handle('/', 'GET', function() use($blade,$static) {
     echo $blade->run('list',['static'=>$static , 'user'=>$user, 'files'=>$files]);
 });
 
+$app->handle('/add_user', 'GET', function() use($blade,$static) { 
+    $user = Auth::getAuthUser();
+    if($user == null) {
+        redirect('/login');
+	}
+    echo $blade->run('add_user',['static'=>$static , 'user'=>$user]);
+});
+$app->handle('/add_user', 'POST', function(Request $request) use($blade,$static) {
+    $username = $request->username;
+    $password = $request->password;
+    if(User::create($username,$password))
+    {
+        redirect('/');
+    }
+});
+
+
+
 $app->handle('/add_file', 'GET', function() use($blade,$static) { 
     $user = Auth::getAuthUser();
     if($user == null) {
@@ -34,6 +51,9 @@ $app->handle('/add_file', 'GET', function() use($blade,$static) {
 	}
     echo $blade->run('add_file',['static'=>$static , 'user'=>$user]);
 });
+
+
+
 
 $app->handle('/login', 'GET', function() use($blade,$static) { 
     if(Auth::getAuthUser() != null) {
@@ -49,6 +69,12 @@ $app->handle('/login', 'POST', function(Request $request) use($blade,$static) {
         redirect('/');
     }
 });
+
+$app->handle('/logout', 'GET', function(Request $request) {    
+    Auth::revoke();
+    redirect('/login');
+});
+
 
 
 
