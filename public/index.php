@@ -139,14 +139,32 @@ $app->handle('/change_password', 'GET', function() use($blade,$static) {
     echo $blade->run('change_password',['static'=>$static , 'user'=>$user]);
 });
 $app->handle('/change_password', 'POST', function(Request $request) use($blade,$static) {
-
+    $user = Auth::getAuthUser();
     $password = $request->password;
-    if(User::create($username,$password))
+    $password_confirm = $request->password_confirm;
+    if($password_confirm == $password && $user->updatePassword($password_confirm))
     {
         redirect('/');
     }
 });
 
+
+
+$app->handle('/delete_file', 'GET', function(Request $request) use($blade,$static) { 
+
+    $user = Auth::getAuthUser();
+    if($user == null) {
+        redirect('/login');
+	}
+    $file_id = $request->id;
+    $file = File::getFileById($file_id);
+    
+    if($file->deleteFile($file_id))
+    {
+        redirect('/');
+    }
+    
+});
 
 
 //-check integritylevel & ...
