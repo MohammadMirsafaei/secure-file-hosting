@@ -48,6 +48,26 @@
         <label for="password_confirm">تکرار رمز عبور</label>
         <input type="password" dir="ltr" class="form-control" name="password_confirm" id="password_confirm" placeholder="تکرار رمز عبور جدید" required>
       </div>
+	 <div class="form-row">
+		  <div class="form-group col-md-6">
+			<label for="confidentiality-lbl">سطح محرمانگی</label>
+			<select class="form-control" name="confidentialitylevel" id="confidentiality-lbl">
+			  <option>TopSecret</option>
+			  <option>Secret</option>
+			  <option>Confidential</option>
+			  <option>Unclassified</option>
+			</select>
+		  </div>
+		  <div class="form-group col-md-6">
+			<label for="integrity-lbl">سطح صحت</label>
+			<select class="form-control" name="integritylevel" id="integrity-lbl">
+			  <option>VeryTrusted</option>
+			  <option>Trusted</option>
+			  <option>SlightlyTrusted</option>
+			  <option>Unrusted</option>
+			</select>
+		  </div>
+		</div>
       <input type="submit" class="btn btn-dark" value="افزودن">
     </form>
   </main>
