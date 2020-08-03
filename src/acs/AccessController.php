@@ -1,18 +1,16 @@
 <?php
 
-namespace ACS;
-
 use logger\Logger;
-use Auth\Auth;
+
 class AccessController
 {
-  private static $integ_lvl = [
+  private $integ_lvl = [
             'VeryTrusted' => 4 ,
             'Trusted' => 3 ,
             'SlightlyTrusted' => 2 ,
             'Untrusted' => 1
               ];
-              private static $conf_lvl = [
+              private $conf_lvl = [
             'TopSecret' => 4 ,
             'Secret' => 3 ,
             'Confidential' => 2 ,
@@ -26,7 +24,7 @@ class AccessController
 
   }
   //integrity
-	private static function checkBiBa($user_level,$file_level,$action){
+	private function checkBiBa($user_level,$file_level,$action){
         if($action=="read"){
           if ($user_level<=$file_level) return true;
           else return false;
@@ -41,7 +39,7 @@ class AccessController
 
 	}
 //conf
-	private static function checkBLP($user_level,$file_level,$action){
+	private function checkBLP($user_level,$file_level,$action){
     if($action=="read"){
       if ($user_level>=$file_level) return true;
       else return false;
@@ -60,19 +58,17 @@ class AccessController
     //how use query db
     $file_intg_level = $file_id->integLevel;
     $file_conf_level = $file_id->confLevel;
-    if(self::checkBiBa(self::$integ_lvl[Auth::getAuthUser()->integLevel],self::$integ_lvl[$file_intg_level],"read" )
-          && self::checkBLP(self::$conf_lvl[Auth::getAuthUser()->confLevel],self::$conf_lvl[$file_conf_level],"read") ){
+    if(checkBiBa($integ_lvl[Auth::getAuthUser()->integLevel],$integ_lvl[$file_intg_level],"read" )
+          && checkBLP($conf_lvl[Auth::getAuthUser()->confLevel],$conf_lvl[$file_conf_level],"read") ){
 
           return true;
     }
-    
     else{ //log
       //$time = date("Y-m-d H:i:s", time()) ; 
-    $temp_log= "User ".Auth::getAuthUser()->username ." <".Auth::getAuthUser()->integLevel .",".Auth::getAuthUser()->confLevel.
-                    "> ". "tried to " . "read ". $file_id->name .
-                    " <".$file_intg_level.",".$file_conf_level+"> "."\taccess denied";
-    \Logger\Logger::log($temp_log);
-
+    $temp_log= "User "+Auth::getAuthUser()->username +" <"+Auth::getAuthUser()->integLevel +","+Auth::getAuthUser()->confLevel+
+                    "> "+ "tried to " + "read "+ $file_id->name +
+                    " <"+$file_intg_level+","+$file_conf_level+"> "+"\taccess denied";
+    Logger::log($temp_log);
     return false;
     }
     
@@ -85,23 +81,45 @@ class AccessController
     //how use query db
     $file_intg_level = $file_id->integLevel;
     $file_conf_level = $file_id->confLevel;
-    if(self::checkBiBa(self::$integ_lvl[Auth::getAuthUser()->integLevel],self::$integ_lvl[$file_intg_level],"write" )
-          && self::checkBLP(self::$conf_lvl[Auth::getAuthUser()->confLevel],self::$conf_lvl[$file_conf_level],"write") ){
+    if(checkBiBa($integ_lvl[Auth::getAuthUser()->integLevel],$integ_lvl[$file_intg_level],"write" )
+          && checkBLP($conf_lvl[Auth::getAuthUser()->confLevel],$conf_lvl[$file_conf_level],"write") ){
           return true;
     }
     else{
        //$time = date("Y-m-d H:i:s", time()) ; 
-    $temp_log= "User ".Auth::getAuthUser()->username ." <".Auth::getAuthUser()->integLevel .",".Auth::getAuthUser()->confLevel.
-    "> ". "tried to " . "write on ". $file_id->name .
-    " <".$file_intg_level.",".$file_conf_level."> "."\taccess denied";
-    \Logger\Logger::log($temp_log);
+    $temp_log= "User "+Auth::getAuthUser()->username +" <"+Auth::getAuthUser()->integLevel +","+Auth::getAuthUser()->confLevel+
+    "> "+ "tried to " + "write on "+ $file_id->name +
+    " <"+$file_intg_level+","+$file_conf_level+"> "+"\taccess denied";
+    Logger::log($temp_log);
     return false;
 
     }
     // check
 
-	}
+  }
+  public static function checkIntLevel(){
+        $name = Auth::getAuthUser()->integLevel;
+        $l = $integ_lvl[$name] ;
+        $arr=[];
+        foreach ($integ_lvl as $key=>$value){
+          if($value >= $l){
+            $arr[]=$key;
+          }
 
+        }
+        return $arr;
 
+  }
+  public static function checkConfLevel(){
+    $name = Auth::getAuthUser()->confLevel;
+    $l = $conf_lvl[$name] ;
+    $arr=[];
+    foreach ($integ_lvl as $key=>$value){
+      if($value <= $l){
+        $arr[]=$key;
+      }
+
+    }
+    return $arr;
+  }
 }
-
