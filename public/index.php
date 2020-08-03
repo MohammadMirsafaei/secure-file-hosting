@@ -48,7 +48,9 @@ $app->handle('/add_user', 'POST', function(Request $request) use($blade,$static)
     $username = $request->username;
     $password = $request->password;
     $password_confirm = $request->password_confirm;
-    if($password_confirm == $password && User::create($username,$password,"",""))
+    $confLevel = $request->confidentialitylevel;
+    $integLevel = $request->integritylevel;
+    if($password_confirm == $password && User::create($username,$password,$integLevel,$confLevel))
     {
         redirect('/');
     }
