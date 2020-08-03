@@ -164,6 +164,12 @@ $app->handle('/login', 'POST', function(Request $request) use($blade,$static) {
     if(Auth::authenticate($username,$password))
     {
         redirect('/');
+    } else {
+        if(User::hasUsername($username)) {
+            $user = User::getUserByUsername($username);
+            $user->lastFailCount++;
+            $user->update();
+        }
     }
 });
 $app->handle('/logout', 'GET', function(Request $request) {    

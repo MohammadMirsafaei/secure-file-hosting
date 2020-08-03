@@ -9,10 +9,10 @@ class User {
     public $id;
     public $username;
     private $password;
-    public $lastFailAttempt;
+    public $lastFailCount;
     public $integLevel;
     public $confLevel;
-
+    public $active;
     
     public static function has(string $username, string $pass): bool
     {
@@ -63,6 +63,30 @@ class User {
         $ret->integLevel = $user['integlevel'];
         $ret->confLevel = $user['conflevel'];
         $ret->id = $user['id'];
+        $ret->active = $user['active'];
+        $ret->lastFailCount = $user['lastfailcount'];
         return $ret;
+    }
+
+    public static function getUserByUsername(string $username)
+    {
+        $user = Database::select("select * from Users where username='{$username}'")[0];
+        $ret = new User();
+        $ret->username = $user['username'];
+        $ret->password = $user['password'];
+        $ret->integLevel = $user['integlevel'];
+        $ret->confLevel = $user['conflevel'];
+        $ret->id = $user['id'];
+        $ret->active = $user['active'];
+        $ret->lastFailCount = $user['lastfailcount'];
+        return $ret;
+    }
+
+    public function update() 
+    {
+        Database::command("update Users set lastfailcount=:lfc where id=:id",[
+            'lfc' => $this->lastFailCount,
+            'id' => $this->id
+        ]);
     }
 }

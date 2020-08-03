@@ -20,4 +20,6 @@ CREATE table Logs(
     id int PRIMARY KEY auto_increment,
     dt datetime DEFAULT NOW(),
     content text
-)
+);
+
+alter table Users add column active int DEFAULT 1
