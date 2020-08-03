@@ -84,9 +84,10 @@ class User {
 
     public function update() 
     {
-        Database::command("update Users set lastfailcount=:lfc where id=:id",[
+        Database::command("update Users set lastfailcount=:lfc,active=:active where id=:id",[
             'lfc' => $this->lastFailCount,
-            'id' => $this->id
+            'id' => $this->id,
+            'active' => $this->active
         ]);
     }
 }

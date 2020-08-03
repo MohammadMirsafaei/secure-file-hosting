@@ -191,6 +191,10 @@ $app->handle('/login', 'POST', function(Request $request) use($blade,$static) {
     } else {
         if(User::hasUsername($username)) {
             $user = User::getUserByUsername($username);
+            if($user->lastFailCount > 10) {
+                $user->active = 0;
+                $user->update();
+            }
             $user->lastFailCount++;
             $user->update();
         }
