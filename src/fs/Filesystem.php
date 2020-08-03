@@ -4,14 +4,18 @@ namespace FS;
 
 use Logger\Logger;
 use Models\File;
-
+use ACS\AccessController;
+use Auth\Auth;
 class Filesystem {
 
-    public static function download(\Models\File $file, \Models\User $user): string
+    public static function download(\Models\File $file): bool
     {
-        // TODO : connect acs
-        Logger::log("user {$user->username} tired to download file but stoped by ACS");
-        return $file->content;
+        if(AccessController::checkDownload($file))
+            return true;
+        else {
+            Logger::log("user ".Auth::getAuthUser()->username." tired to download file but stoped by ACS");
+            return false;
+        }
     }
 
     public static function upload(\Models\File $file, \Models\User $user)

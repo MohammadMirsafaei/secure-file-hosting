@@ -11,6 +11,7 @@ use eftec\bladeone\BladeOne;
 use Database\Database;
 use Models\User;
 use Models\File;
+use FS\Filesystem;
 
 $app = App::init();
 $blade = new BladeOne(__DIR__.'/views',__DIR__.'/../cache',BladeOne::MODE_DEBUG);
@@ -66,8 +67,15 @@ $app->handle('/read_file', 'GET', function(Request $request) use($blade,$static)
 	}
     $file_id = $request->id;
     $file = File::getFileById($file_id);
+    if(FS\Filesystem::download($file))
+    {
+        echo $blade->run('read_file',['static'=>$static , 'user'=>$user , 'file'=>$file]);
+    }
+    else {
+        http_response_code(403);
+        echo "you cant read this file";
+    }
     
-    echo $blade->run('read_file',['static'=>$static , 'user'=>$user , 'file'=>$file]);
 });
 
 
@@ -84,8 +92,14 @@ $app->handle('/edit_file', 'GET', function(Request $request) use($blade,$static)
 	}
     $file_id = $request->id;
     $file = File::getFileById($file_id);
+    if(Filesystem::upload($file,Auth::getAuthUser()))
+    {
+        echo $blade->run('edit_file',['static'=>$static , 'user'=>$user , 'file'=>$file]);
+    } else {
+        http_response_code(403);
+        echo "you cant edit this file";
+    }
     
-    echo $blade->run('edit_file',['static'=>$static , 'user'=>$user , 'file'=>$file]);
 });
 $app->handle('/edit_file', 'POST', function(Request $request) use($blade,$static) {
     $user = Auth::getAuthUser();
@@ -94,12 +108,20 @@ $app->handle('/edit_file', 'POST', function(Request $request) use($blade,$static
 	}
     $file_id = $request->file_id;
     $content = $request->content;
+    $file = File::getFileById($file_id);
 
-    if(File::update($file_id,$content))
+    if(Filesystem::upload($file,Auth::getAuthUser()))
     {
-
-        redirect('/');
+        $file->update($content);
+        
+    
+            redirect('/');
+        
+    } else {
+        http_response_code(403);
+        echo "you cant edit this file";
     }
+    
 });
 
 

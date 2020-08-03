@@ -1,16 +1,18 @@
 <?php
 
-use logger\Logger;
+namespace ACS;
 
+use logger\Logger;
+use Auth\Auth;
 class AccessController
 {
-  private $integ_lvl = [
+  private static $integ_lvl = [
             'VeryTrusted' => 4 ,
             'Trusted' => 3 ,
             'SlightlyTrusted' => 2 ,
             'Untrusted' => 1
               ];
-              private $conf_lvl = [
+              private static $conf_lvl = [
             'TopSecret' => 4 ,
             'Secret' => 3 ,
             'Confidential' => 2 ,
@@ -24,7 +26,7 @@ class AccessController
 
   }
   //integrity
-	private function checkBiBa($user_level,$file_level,$action){
+	private static function checkBiBa($user_level,$file_level,$action){
         if($action=="read"){
           if ($user_level<=$file_level) return true;
           else return false;
@@ -39,7 +41,7 @@ class AccessController
 
 	}
 //conf
-	private function checkBLP($user_level,$file_level,$action){
+	private static function checkBLP($user_level,$file_level,$action){
     if($action=="read"){
       if ($user_level>=$file_level) return true;
       else return false;
@@ -58,8 +60,8 @@ class AccessController
     //how use query db
     $file_intg_level = $file_id->integLevel;
     $file_conf_level = $file_id->confLevel;
-    if(checkBiBa($integ_lvl[Auth::getAuthUser()->integLevel],$integ_lvl[$file_intg_level],"read" )
-          && checkBLP($conf_lvl[Auth::getAuthUser()->confLevel],$conf_lvl[$file_conf_level],"read") ){
+    if(self::checkBiBa(self::$integ_lvl[Auth::getAuthUser()->integLevel],self::$integ_lvl[$file_intg_level],"read" )
+          && self::checkBLP(self::$conf_lvl[Auth::getAuthUser()->confLevel],self::$conf_lvl[$file_conf_level],"read") ){
 
           return true;
     }
@@ -81,8 +83,8 @@ class AccessController
     //how use query db
     $file_intg_level = $file_id->integLevel;
     $file_conf_level = $file_id->confLevel;
-    if(checkBiBa($integ_lvl[Auth::getAuthUser()->integLevel],$integ_lvl[$file_intg_level],"write" )
-          && checkBLP($conf_lvl[Auth::getAuthUser()->confLevel],$conf_lvl[$file_conf_level],"write") ){
+    if(self::checkBiBa(self::$integ_lvl[Auth::getAuthUser()->integLevel],self::$integ_lvl[$file_intg_level],"write" )
+          && self::checkBLP(self::$conf_lvl[Auth::getAuthUser()->confLevel],self::$conf_lvl[$file_conf_level],"write") ){
           return true;
     }
     else{
