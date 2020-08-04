@@ -90,4 +90,9 @@ class User {
             'active' => $this->active
         ]);
     }
+
+    public function updatePassword(string $password) 
+    {
+        
+    }
 }

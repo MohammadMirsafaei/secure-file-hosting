@@ -64,5 +64,12 @@ class File {
         return $ret;
     }
 
+    public function delete() 
+    {
+        Database::command("delete from Files where id=:id",[
+            'id' => $this->id
+        ]);
+    }
+
     
 }
